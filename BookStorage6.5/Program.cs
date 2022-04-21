@@ -34,27 +34,27 @@ namespace BookStorage6._5
             {
                 Console.WriteLine("1 - Добавить книгу\n2 - Убрать книгу из хранилища\n3 - Показать все книги\n4 - Поиск по параметру\n5 - Выход");
 
-                int userInput = Convert.ToInt32(Console.ReadLine());
+                string userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
-                    case 1:
+                    case "1":
                         AddBook();
                         break;
 
-                    case 2:
+                    case "2":
                         RemoveBook();
                         break;
 
-                    case 3:
+                    case "3":
                         ShowAllBooks();
                         break;
 
-                    case 4:
+                    case "4":
                         FindBookByParametrs();
                         break;
 
-                    case 5:
+                    case "5":
                         _isWorking = false;
                         break;
 
@@ -76,16 +76,9 @@ namespace BookStorage6._5
 
             if (succsessfullyConverted)
             {
-                if(bookYear > int.MinValue && bookYear < int.MaxValue)
-                {
-                    _books.Add(new Book(userInputBookName,userInputBookAuthor,bookYear));
-                    Console.WriteLine("Книга успешно добавлена");
-                    PrintPlugMassage();
-                }
-                else
-                {
-                    PrintPlugNegativeMassage();
-                }
+                _books.Add(new Book(userInputBookName, userInputBookAuthor, bookYear));
+                Console.WriteLine("Книга успешно добавлена");
+                PrintPlugMassage();
             }
             else
             {
@@ -122,23 +115,23 @@ namespace BookStorage6._5
         {
             Console.WriteLine("1 - Поиск по названию\n2 - Поиск по фамилии\n3 - Поиск по году публикации\n4 - Назад");
 
-            int userInput = Convert.ToInt32(Console.ReadLine());
+            string userInput = Console.ReadLine();
 
             switch (userInput)
             {
-                case 1:
+                case "1":
                     FindByBookName();
                     break;
 
-                case 2:
+                case "2":
                     FindByAuthor();
                     break;
 
-                case 3:
+                case "3":
                     FindByYear();
                     break;
 
-                case 4:
+                case "4":
                     Console.Clear();
                     break;
 
@@ -150,62 +143,64 @@ namespace BookStorage6._5
 
         private void FindByBookName()
         {
-            Console.Write("Введите название книги");
+            bool isBookFoundByName = false;
+            Console.WriteLine("Введите название книги");
             string nameOfBook = Console.ReadLine();
 
             foreach (var book in _books)
             {
                 if (nameOfBook.ToLower() == book.Name.ToLower())
                 {
-                    Console.WriteLine($" {book.Name} {book.Author} {book.Year}");
-                }
-                else
-                {
-                    PrintPlugNegativeMassage();
-                }
+                    ShowFoundBook(book);
+                    isBookFoundByName = true;
+                    PrintPlugMassage();
+                }                
+            }
+            if(isBookFoundByName == false)
+            {
+                PrintPlugNegativeMassage();
             }
         }
 
         private void FindByAuthor()
         {
-            Console.Write("Введите фамилию автора");
+            bool isBookFoundByAuthor = false;
+            Console.WriteLine("Введите фамилию автора");
             string authorOfBook = Console.ReadLine();
 
             foreach (var book in _books)
             {
                 if (authorOfBook.ToLower() == book.Author.ToLower())
                 {
-                    Console.WriteLine($"{book.Name} {book.Author} {book.Year}");
-                }
-                else
-                {
-                    PrintPlugNegativeMassage();
-                }
+                    ShowFoundBook(book);
+                    isBookFoundByAuthor = true;
+                    PrintPlugMassage();
+                }                
+            }
+            if (isBookFoundByAuthor == false)
+            {
+                PrintPlugNegativeMassage();
             }
         }
 
         private void FindByYear()
         {
-            Console.Write("Введите год публикации");
+            bool isBookFoundByYear = false;
+            Console.WriteLine("Введите год публикации");
             bool succsessfullyConverted = CanNumberBeConverted(out int bookYearOfRelease);
 
             if (succsessfullyConverted)
             {
-                if (bookYearOfRelease > int.MinValue && bookYearOfRelease < int.MaxValue)
+                foreach (Book book in _books)
                 {
-                    foreach(var book in _books)
+                    if (bookYearOfRelease == book.Year)
                     {
-                        if(bookYearOfRelease == book.Year)
-                        {
-                            Console.WriteLine($"{book.Name} {book.Author} {book.Year}");
-                        }
-                        else
-                        {
-                            PrintPlugNegativeMassage();
-                        }
-                    }
+                        ShowFoundBook(book);
+                        isBookFoundByYear=true;
+                        PrintPlugMassage();
+                    }                    
                 }
-                else
+                if(isBookFoundByYear == false)
                 {
                     PrintPlugNegativeMassage();
                 }
@@ -213,7 +208,12 @@ namespace BookStorage6._5
             else
             {
                 PrintPlugNegativeMassage();
-            }
+            }           
+        }
+
+        private void ShowFoundBook(Book book)
+        {            
+            Console.WriteLine($"{book.Name} {book.Author} {book.Year}");
         }
 
         private void ShowAllBooks()
@@ -223,13 +223,14 @@ namespace BookStorage6._5
 
                 for (int i = 0; i < _books.Count; i++)
                 {
-                    Console.Write($"(i + 1) - ");
+                    Console.Write($"{i + 1} - ");
                     _books[i].ShowBookInfo();
                 }
+                PrintPlugMassage();
             }            
             else
             {
-                Console.WriteLine("В базе нет игроков");
+                Console.WriteLine("На полке нет книг");
                 PrintPlugMassage();
             }
         }
@@ -273,6 +274,5 @@ namespace BookStorage6._5
         {
             Console.WriteLine($"{Name} {Author} {Year}");
         }
-
     }
 }
