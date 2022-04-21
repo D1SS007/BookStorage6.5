@@ -21,7 +21,7 @@ namespace BookStorage6._5
         public BookStoge()
         {
             _books.Add(new Book("Евгений Онегин", "Пушкин", 1830));
-            _books.Add(new Book("Мернтвые души", "Гоголь", 1842));
+            _books.Add(new Book("Мертвые души", "Гоголь", 1842));
             _books.Add(new Book("Герой нашего времени", "Лермонтов", 1840));
             _books.Add(new Book("Преступление и наказание", "Достоевский", 1830));
             _books.Add(new Book("Горе от ума", "Грибоедов", 1866));
