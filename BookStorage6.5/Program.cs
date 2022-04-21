@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BookStorage6._5
@@ -7,21 +7,21 @@ namespace BookStorage6._5
     {
         static void Main(string[] args)
         {
-            BookStoge bookStoge = new BookStoge();
-            bookStoge.Work();
+            BookStorage bookStorage = new BookStorage();
+            bookStorage.Work();
         }
     }
 
-    class BookStoge
+    class BookStorage
     {
         public List<Book> _books = new List<Book>();
 
         private bool _isWorking = true;
 
-        public BookStoge()
+        public BookStorage()
         {
             _books.Add(new Book("Евгений Онегин", "Пушкин", 1830));
-            _books.Add(new Book("Мертвые души", "Гоголь", 1842));
+            _books.Add(new Book("Мернтвые души", "Гоголь", 1842));
             _books.Add(new Book("Герой нашего времени", "Лермонтов", 1840));
             _books.Add(new Book("Преступление и наказание", "Достоевский", 1830));
             _books.Add(new Book("Горе от ума", "Грибоедов", 1866));
