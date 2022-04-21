@@ -89,7 +89,7 @@ namespace BookStorage6._5
         private void RemoveBook()
         {
             ShowAllBooks();
-            Console.WriteLine("Введите индекс книги");
+            Console.WriteLine("Введите номер книги которую хотите удалить");
             bool succsessfullyConverted = CanNumberBeConverted(out int result);
 
             if (succsessfullyConverted)
