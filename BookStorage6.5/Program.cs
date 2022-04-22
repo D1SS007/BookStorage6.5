@@ -21,11 +21,11 @@ namespace BookStorage6._5
         public BookStorage()
         {
             _books.Add(new Book("Евгений Онегин", "Пушкин", 1830));
-            _books.Add(new Book("Мернтвые души", "Гоголь", 1842));
+            _books.Add(new Book("Мертвые души", "Гоголь", 1842));
             _books.Add(new Book("Герой нашего времени", "Лермонтов", 1840));
             _books.Add(new Book("Преступление и наказание", "Достоевский", 1830));
             _books.Add(new Book("Горе от ума", "Грибоедов", 1866));
-            _books.Add(new Book("метро 2033", "Глуховский", 2005));
+            _books.Add(new Book("метро 2033", "Глуховский", 2005));            
         }
 
         public void Work()
@@ -71,43 +71,39 @@ namespace BookStorage6._5
             string userInputBookName = Console.ReadLine();
             Console.WriteLine("Ведите фамилию автора книги");
             string userInputBookAuthor = Console.ReadLine();
-            Console.WriteLine("Введите год написания книги");
-            bool succsessfullyConverted = CanNumberBeConverted(out int bookYear);
+            Console.WriteLine("Введите год публикации книги");            
 
-            if (succsessfullyConverted)
+            if (int.TryParse(Console.ReadLine(), out int bookYear))
             {
-                _books.Add(new Book(userInputBookName, userInputBookAuthor, bookYear));
-                Console.WriteLine("Книга успешно добавлена");
-                PrintPlugMassage();
+                _books.Add(new Book(userInputBookName, userInputBookAuthor, bookYear));                
+                PrintPlugMassage("\nКнига успешно добавлена");
             }
             else
             {
-                PrintPlugNegativeMassage();
+                PrintPlugMassage("Некорректные данны\nНажмите кнопку для продолжения");
             }
         }
 
         private void RemoveBook()
         {
             ShowAllBooks();
-            Console.WriteLine("Введите номер книги которую хотите удалить");
-            bool succsessfullyConverted = CanNumberBeConverted(out int result);
+            Console.WriteLine("\nВведите порядковый номер книги которую хотите удалить");            
 
-            if (succsessfullyConverted)
+            if (int.TryParse(Console.ReadLine(), out int result))
             {
                 if(result >= 1 && result <= _books.Count)
                 {
-                    _books.RemoveAt(result - 1);
-                    Console.WriteLine("Книга успешно удалена");
-                    PrintPlugMassage();
+                    _books.RemoveAt(result - 1);                    
+                    PrintPlugMassage("Книга успешно удалена");
                 }
                 else
                 {
-                    PrintPlugNegativeMassage();
+                    PrintPlugMassage("Некорректные данны\nНажмите кнопку для продолжения");
                 }
             }
             else
             {
-                PrintPlugNegativeMassage();
+                PrintPlugMassage("Некорректные данны\nНажмите кнопку для продолжения");
             }
         }
 
@@ -153,13 +149,14 @@ namespace BookStorage6._5
                 {
                     ShowFoundBook(book);
                     isBookFoundByName = true;
-                    PrintPlugMassage();
+                    
                 }                
             }
             if(isBookFoundByName == false)
             {
-                PrintPlugNegativeMassage();
+                PrintPlugMassage("Некорректные данны\nНажмите кнопку для продолжения");
             }
+            PrintPlugMassage("Нажмите кнопку для продолжения");
         }
 
         private void FindByAuthor()
@@ -173,42 +170,41 @@ namespace BookStorage6._5
                 if (authorOfBook.ToLower() == book.Author.ToLower())
                 {
                     ShowFoundBook(book);
-                    isBookFoundByAuthor = true;
-                    PrintPlugMassage();
+                    isBookFoundByAuthor = true;                    
                 }                
             }
             if (isBookFoundByAuthor == false)
             {
-                PrintPlugNegativeMassage();
+                PrintPlugMassage("Некорректные данны\nНажмите кнопку для продолжения");
             }
+            PrintPlugMassage("Нажмите кнопку для продолжения");
         }
 
         private void FindByYear()
         {
             bool isBookFoundByYear = false;
-            Console.WriteLine("Введите год публикации");
-            bool succsessfullyConverted = CanNumberBeConverted(out int bookYearOfRelease);
+            Console.WriteLine("Введите год публикации");            
 
-            if (succsessfullyConverted)
+            if (int.TryParse(Console.ReadLine(), out int bookYearOfRelease))
             {
                 foreach (Book book in _books)
                 {
                     if (bookYearOfRelease == book.Year)
                     {
                         ShowFoundBook(book);
-                        isBookFoundByYear=true;
-                        PrintPlugMassage();
+                        isBookFoundByYear=true;                        
                     }                    
                 }
                 if(isBookFoundByYear == false)
                 {
-                    PrintPlugNegativeMassage();
+                    PrintPlugMassage("Некорректные данны\nНажмите кнопку для продолжения");
                 }
             }
             else
             {
-                PrintPlugNegativeMassage();
-            }           
+                PrintPlugMassage("Некорректные данны\nНажмите кнопку для продолжения");
+            }
+            PrintPlugMassage("Нажмите кнопку для продолжения");
         }
 
         private void ShowFoundBook(Book book)
@@ -224,37 +220,21 @@ namespace BookStorage6._5
                 for (int i = 0; i < _books.Count; i++)
                 {
                     Console.Write($"{i + 1} - ");
-                    _books[i].ShowBookInfo();
-                }
-                PrintPlugMassage();
+                    _books[i].ShowInfo();
+                }                
             }            
             else
-            {
-                Console.WriteLine("На полке нет книг");
-                PrintPlugMassage();
+            {                
+                PrintPlugMassage("На полке нет книг\nНажмите кнопку для продолжения");
             }
         }
 
-        private bool CanNumberBeConverted(out int result)
+        private void PrintPlugMassage(string text)
         {
-            string userInput = Console.ReadLine();
-            bool sucsessfullyConverted = int.TryParse(userInput, out result);
-            return sucsessfullyConverted;
-        }
-
-        private void PrintPlugMassage()
-        {
-            Console.WriteLine("Нажмите любую кнопку для продолжения");
+            Console.WriteLine(text);
             Console.ReadKey();
             Console.Clear();
-        }
-
-        private void PrintPlugNegativeMassage()
-        {
-            Console.WriteLine("Некорректные данные\nНажмите любую кнопку для продолжения");
-            Console.ReadKey();
-            Console.Clear();
-        }
+        }        
     }
 
     class Book
@@ -270,7 +250,7 @@ namespace BookStorage6._5
             Year = year;
         }
 
-        public void ShowBookInfo()
+        public void ShowInfo()
         {
             Console.WriteLine($"{Name} {Author} {Year}");
         }
